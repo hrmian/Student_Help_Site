@@ -9,7 +9,28 @@
     <title>{% block title %}SHS{% endblock %}</title>
 </head>
 <body class="text-center">
-{% block content %}
-{% endblock content %}
+<div class="container my-3">
+    <div class="row justify-content-center">
+        <div class="col md">
+            <div class="row my-2">
+                <div class="col-6 text-left">
+                    SHS -- logo here?
+                </div>
+                <div class="col-6 text-right">
+                    {% if user.is_authenticated %}
+                        Current user:
+                        {{ user.username }}
+                        (<a href="{% url 'logout' %}">Log out</a>)
+                    {% endif %}
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                {% block content %}
+                {% endblock content %}
+            </div>
+        </div>
+    </div>
+</div>
+</div>
 </body>
 </html>

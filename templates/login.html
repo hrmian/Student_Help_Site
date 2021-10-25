@@ -1,28 +1,28 @@
 {% extends 'base.html' %}
 {% block content %}
-<div id="header">
-    <h1>Login</h1>
-</div>
-<br>
-<div id="login_form">
-    <form action="/" method="post">
-        {% csrf_token %}
-        {% if form.non_field_errors %}
-            <div class="alert alert-danger" role="alert">
-                {% for error in form.non_field_errors %}
-                    {{ error }}
+    <br>
+    <div class="card">
+        <div class="card-body">
+            Login
+            <form action="" method="post">
+                {% csrf_token %}
+                {% if form.non_field_errors %}
+                    <div class="alert alert-danger" role="alert">
+                        {% for error in form.non_field_errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                {% for field in form.visible_fields %}
+                    <div class="form-group">
+                        {{ field.label_tag }}
+                        {{ field }}
+                    </div>
                 {% endfor %}
-            </div>
-        {% endif %}
-        {% for field in form.visible_fields %}
-            <div class="form-group">
-                {{ field.label_tag }}
-                {{ field }}
-            </div>
-        {% endfor %}
-        <input type="submit" value="Login">
-        <br><br>
-        <a class="btn btn-primary" href="/register">Create Account</a>
-    </form>
-</div>
+                <input type="submit" value="Login">
+                <br><br>
+                <a class="btn btn-primary" href="/">Create Account</a>
+            </form>
+        </div>
+    </div>
 {% endblock %}
