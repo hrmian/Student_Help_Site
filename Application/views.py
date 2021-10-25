@@ -1,26 +1,23 @@
+from django.contrib.auth import login
+from django.contrib.auth.forms import UserCreationForm
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.views import View
-from django.contrib.auth.models import User
 from .forms import LoginForm
 
 
-class Login(View):
-    def get(self, request):
-        return render(request, "login.html", {'form': LoginForm()})
-
-    def post(self, request):
+def user_login(request):
+    if request.method == 'POST':
         form = LoginForm(request.POST)
         if form.is_valid():
             user = form.login(request)
             if user:
-                request.session["username"] = user.username
+                login(request, user)
                 return redirect("home")
-        return render(request, "login.html", {'form': form})
+    else:
+        form = LoginForm()
+    return render(request, "login.html", {'form': form})
 
 
-class Home(View):
-    def get(self, request):
-        return render(request, "home.html")
-
-    def post(self, request):
-        pass
+def home(request):
+    return render(request, 'home.html')
