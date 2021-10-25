@@ -1,13 +1,17 @@
+from django.contrib.auth.models import AbstractUser
 from django.db import models
+
+ROLES = (
+    ('Admin', 'Admin'),
+    ('Professor', 'Professor'),
+    ('Student', 'Student'),
+    ('Alum', 'Alum')
+)
 
 
 # Create your models here.
-class User(models.Model):
-    firstname = models.CharField(max_length=30, default='')
-    lastname = models.CharField(max_length=30, default='')
-    email = models.EmailField(max_length=100, default='')
-    password = models.CharField(max_length=30, default='')
-    role = models.CharField(max_length=10, default='') #admin, professor, student, alumni, 
+class User(AbstractUser):
+    role = models.CharField(max_length=20, choices=ROLES, default='Student')
     
     
 class Course(models.Model):
