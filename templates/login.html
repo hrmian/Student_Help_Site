@@ -2,44 +2,35 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width">
-    <title>Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
+          integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
 </head>
 <body class="text-center">
 <div id="header">
     <h1>Login</h1>
 </div>
-
+<br>
 <div id="login_form">
-<!--
     <form action="/" method="post">
         {% csrf_token %}
-        <div class="center" id="login_box">
-            {% if error %}
-                <div class="alert alert-danger">{{ error }}</div>
-            {% endif %}
-            <br>
-            <label for="username" class="sr-only">Username:</label> <input type="text" name="loginUsername"
-                                                                           placeholder="Username" class="form-control"
-                                                                           id="loginUsername">
-            <br>
-            <label for="password" class="sr-only">Password: </label> <input type="password" name="loginPassword"
-                                                                           placeholder="Password" class="form-control"
-                                                                           id="loginPassword">
-            <br>
-            <br>
-            <button type="submit" id="login_btn">Sign in</button>
-        </div>
+        {% if form.non_field_errors %}
+            <div class="alert alert-danger" role="alert">
+                {% for error in form.non_field_errors %}
+                    {{ error }}
+                {% endfor %}
+            </div>
+        {% endif %}
+        {% for field in form.visible_fields %}
+            <div class="form-group">
+                {{ field.label_tag }}
+                {{ field }}
+            </div>
+        {% endfor %}
+        <input type="submit" value="Login">
+        <br><br>
+        <button type="button">Create Account</button>
     </form>
-    -->
-<form action="/" method="post">
-    {% csrf_token %}
-    {{ form.field_errors }}
-    <table>
-        {{ form }}
-    </table>
-    <input type="submit" value="Submit">
-</form>
 </div>
 </body>
 </html>
