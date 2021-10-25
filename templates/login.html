@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Login</title>
+</head>
+<body class="text-center">
+<div id="header">
+    <h1>Login</h1>
+</div>
+
+<div id="login_form">
+    <form action="/" method="post">
+        {% csrf_token %}
+        <div class="center" id="login_box">
+            {% if error %}
+                <div class="alert alert-danger">{{ error }}</div>
+            {% endif %}
+            <br>
+            <label for="username" class="sr-only">Username:</label> <input type="text" name="loginUsername"
+                                                                           placeholder="Username" class="form-control"
+                                                                           id="loginUsername">
+            <br>
+            <label for="password" class="sr-only">Password: </label> <input type="password" name="loginPassword"
+                                                                           placeholder="Password" class="form-control"
+                                                                           id="loginPassword">
+            <br>
+            <br>
+            <button type="submit" id="login_btn">Sign in</button>
+        </div>
+    </form>
+</div>
+</body>
+</html>
