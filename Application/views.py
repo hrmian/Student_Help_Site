@@ -21,15 +21,6 @@ def user_login(request, **kwargs):
     return render(request, "login.html", {'form': form})
 
 
-'''
-def user_login(request, **kwargs):
-    if request.method == 'GET' and request.user.is_authenticated():
-        return redirect("home")
-    else:
-        return login(request)
-'''
-
-
 @login_required()
 def home(request):
     return render(request, 'home.html')
