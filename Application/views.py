@@ -28,14 +28,6 @@ class Home(View):
         pass
 
 
-class CreateAccount1(View):
-    def get(self, request):
-        return render(request, "createAccount.html")
-
-    def post(self, request):
-        pass
-
-
 def CreateAccount(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
