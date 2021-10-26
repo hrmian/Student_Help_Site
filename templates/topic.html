@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <p>{{ topic.subject }}</p>
+    <p>{{ message }}</p>
+    <p>{{ topic.content }}</p>
+    <p>
+    {% for r in replies %}
+        <p>{{ r.content }} {{ r.timestamp }}</p>
+    {% endfor %}
+    </p>
+{% endblock %}

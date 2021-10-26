@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    {% for t in topics %}
+        <a href="{% url 'topic' discussion_topic=t.id %}"class="btn btn-sm btn-outline-dark">{{ t.subject }}</a>
+    {% endfor %}
+{% endblock %}
