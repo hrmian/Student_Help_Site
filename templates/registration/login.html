@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block content %}
+    <br>
+    <div class="card" style="width: 24rem;">
+        <div class="card-body m-2">
+            <form action="" method="post">
+                {% csrf_token %}
+                <p></p>
+                {% if form.non_field_errors %}
+                    <div class="alert alert-danger" role="alert">
+                        {% for error in form.non_field_errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                {% for field in form.visible_fields %}
+                    <div class="form-group my-1">
+                        {{ field.label_tag }}
+                        {{ field }}
+                    </div>
+                {% endfor %}
+                <button type="submit" class="btn btn-primary w-100 my-2">Login</button>
+                <br>
+                <div class="row align-items-center no-gutters">
+                    <span>
+                        Don't have an account?
+                        <a class="card-link text-decoration-none" href="/">Sign Up</a>
+                    </span>
+                </div>
+                <div class="row align items-center">
+                    <div class="col sm-12">
+                        <a class="card-link text-decoration-none" href="/">Forgot password?</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
