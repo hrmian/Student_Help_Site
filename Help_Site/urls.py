@@ -25,5 +25,5 @@ urlpatterns = [
     path('profile/<slug:username>', views.user_profile, name="profile"),
     path('discussions/', views.discussions, name="discussions"),
     path('topics/<int:discussion_topic>/', views.topic, name="topic"),
-    path('tinymce/', include('tinymce.urls')),
+    path('newtopic/', views.create_topic, name="create_topic"),
 ]

@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth import authenticate
 from django.forms import PasswordInput
-from Application.models import Reply
+from Application.models import Reply, Topic
 
 
 class LoginForm(forms.Form):
@@ -21,6 +21,15 @@ class LoginForm(forms.Form):
         password = self.cleaned_data.get('password')
         user = authenticate(username=username, password=password)
         return user
+
+
+class TopicForm(forms.ModelForm):
+    class Meta:
+        model = Topic
+        fields = ('subject', 'course', 'content')
+        labels = {
+            'content': '',
+        }
 
 
 class ReplyForm(forms.ModelForm):
