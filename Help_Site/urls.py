@@ -23,7 +23,7 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
     path('', views.home, name="home"),
     path('profile/<slug:username>', views.user_profile, name="profile"),
-    path('discussions/', views.discussions, name="discussions"),
+    path('discussions/<int:course_id>', views.discussions, name="discussions"),
     path('topics/<int:discussion_topic>/', views.topic, name="topic"),
     path('newtopic/', views.create_topic, name="create_topic"),
 ]

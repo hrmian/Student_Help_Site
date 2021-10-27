@@ -1,6 +1,21 @@
 {% extends 'base.html' %}
 {% block content %}
 <div id="header">
-    <h1>HOMEPAGE</h1>
+        <div class="col-10">
+        <div class="d-grid gap-2">
+            <div class="row">
+                <div class="col-4">
+                    <h2 class="float-start">Courses</h2>
+                </div>
+            </div>
+            {% for c in courses %}
+                <div class="row">
+                    <a href="{% url 'discussions' course_id=c.id %} "
+                       class="btn btn-sm btn-outline-dark w-100 rounded-0" style="text-align:left;">{{ c.name }}</a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    </div>
 </div>
 {% endblock %}

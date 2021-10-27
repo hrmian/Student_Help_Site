@@ -1,17 +1,16 @@
-from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.views import View
-from .forms import LoginForm, ReplyForm, TopicForm
-from .models import User, Topic, Reply
-from datetime import datetime
+from .forms import ReplyForm, TopicForm
+from .models import User, Topic, Reply, Course
 
 
 @login_required()
 def home(request):
-    return render(request, 'home.html')
+    courses = Course.objects.all()
+    return render(request, 'home.html', {'courses': courses})
 
 
 @login_required()
@@ -21,8 +20,8 @@ def user_profile(request, username):
 
 
 @login_required()
-def discussions(request):
-    topics = Topic.objects.all()
+def discussions(request, course_id):
+    topics = Topic.objects.filter(course__id=course_id)
     return render(request, 'discussions.html', {'topics': topics})
 
 
@@ -36,7 +35,7 @@ def create_topic(request):
             content = form.cleaned_data.get('content')
             course = form.cleaned_data.get('course')
             Topic.objects.create(subject=subject, content=content, user=request.user, course=course)
-            return redirect('discussions')
+            return redirect('discussions', course_id=course.id)
     else:
         form = TopicForm()
         return render(request, 'create_topic.html', {'message': message, 'form': form})
