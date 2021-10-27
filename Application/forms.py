@@ -20,3 +20,21 @@ class LoginForm(forms.Form):
         password = self.cleaned_data.get('password')
         user = authenticate(username=username, password=password)
         return user
+
+
+class SignupForm(forms.Form):
+    first_name = forms.CharField(widget=forms.TextInput(attrs={"placeholder": "First Name"}), max_length=100, required=True)
+    last_name = forms.CharField(widget= forms.TextInput(attrs={"placeholder": "Last Name"}), max_length=100, required=True)
+    email = forms.CharField(widget= forms.TextInput(attrs={"placeholder": "Email"}), max_length=20, required=True)
+    role = forms.CharField(widget=forms.TextInput(attrs={"placeholder": "Role"}), max_length=100, required=True)
+    username = forms.CharField(widget= forms.TextInput(attrs={"placeholder": "Username"}), max_length=100, required=True)
+    password = forms.CharField(widget=PasswordInput(attrs={"placeholder": "Password"}), min_length=8, max_length=100, required=True)
+    confirm_password = forms.CharField(widget=PasswordInput(attrs={"placeholder": "Confirm Password"}),min_length=8,
+                                        max_length=100, required=True)
+
+
+class ForgotPassForm(forms.Form):
+    email = forms.CharField(widget= forms.TextInput(attrs={"placeholder": "Email"}), max_length=20, required=True)
+    new_password = forms.CharField(widget=PasswordInput(attrs={"placeholder": "New Password"}), min_length=8, max_length=100, required=True)
+    confirm_password = forms.CharField(widget=PasswordInput(attrs={"placeholder": "Confirm Password"}), min_length=8,
+                                       max_length=100, required=True)
