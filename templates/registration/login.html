@@ -7,7 +7,7 @@
             <form action="" method="post">
                 {% csrf_token %}
                 <div class="mb-4">
-                    <img src="{% static "images/logo_text.svg" %}" width="280">
+                    <img src="{% static "images/logo_text.svg" %}" alt="" width="280">
                 </div>
                 {% if form.non_field_errors %}
                     <div class="alert alert-danger" role="alert">

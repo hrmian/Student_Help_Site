@@ -4,8 +4,9 @@ from django.contrib.auth.forms import UserCreationForm
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.views import View
-from .forms import LoginForm
+from .forms import LoginForm, ReplyForm
 from .models import User, Topic, Reply
+from datetime import datetime
 
 
 @login_required()
@@ -35,4 +36,13 @@ def topic(request, discussion_topic):
         replies = Reply.objects.filter(topic__id=discussion_topic)
     else:
         message = "Topic does not exist"
-    return render(request, 'topic.html', {'message': message, 'topic': t, 'replies': replies})
+
+    if request.method == 'POST':
+        form = ReplyForm(request.POST)
+        if form.is_valid():
+            content = form.cleaned_data.get('content')
+            reply = Reply.objects.create(content=content, user=request.user, topic=t)
+
+    else:
+        form = ReplyForm()
+    return render(request, 'topic.html', {'message': message, 'topic': t, 'replies': replies, 'form': form})
