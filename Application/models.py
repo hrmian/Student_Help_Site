@@ -10,6 +10,14 @@ ROLES = (
 )
 
 
+SIGNUPROLES = (
+    ('Alum', 'Alum'),
+    ('Professor', 'Professor'),
+    ('Student', 'Student'),
+
+)
+
+
 # Create your models here.
 class User(AbstractUser):
     role = models.CharField(max_length=20, choices=ROLES, default='Student')
@@ -33,3 +41,7 @@ class Reply(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
+
+
+class SignUpUser(models.Model):
+    role = models.CharField(max_length=20, choices=SIGNUPROLES, default='Student')
