@@ -44,7 +44,7 @@ class ForgotPassForm(forms.Form):
 class TopicForm(forms.ModelForm):
     class Meta:
         model = Topic
-        fields = ('subject', 'course', 'content')
+        fields = ('subject', 'content')
         labels = {
             'content': '',
         }

@@ -23,23 +23,24 @@ def user_profile(request, username):
 @login_required()
 def discussions(request, course_id):
     topics = Topic.objects.filter(course__id=course_id)
-    return render(request, 'discussions.html', {'topics': topics})
+    return render(request, 'discussions.html', {'topics': topics, 'id': course_id})
 
 
 @login_required()
-def create_topic(request):
-    message = ''
+def create_topic(request, course_id):
+    # if this doesn't exist load error
+    course = Course.objects.get(id=course_id)
+
     if request.method == 'POST':
         form = TopicForm(request.POST)
         if form.is_valid():
             subject = form.cleaned_data.get('subject')
             content = form.cleaned_data.get('content')
-            course = form.cleaned_data.get('course')
             Topic.objects.create(subject=subject, content=content, user=request.user, course=course)
-            return redirect('discussions', course_id=course.id)
+            return redirect('discussions', course_id=course_id)
     else:
         form = TopicForm()
-        return render(request, 'create_topic.html', {'message': message, 'form': form})
+        return render(request, 'create_topic.html', {'form': form})
 
 
 # clean up - split up?
