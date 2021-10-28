@@ -8,7 +8,7 @@
                     <h2 class="float-start">Discussions</h2>
                 </div>
                 <div class="col 4">
-                <a class="btn btn-success float-end" href="{% url 'create_topic' %}">+ Post</a>
+                <a class="btn btn-success float-end" href="{% url 'create_topic' course_id=id %}">+ Post</a>
                 </div>
             </div>
             {% for t in topics %}
