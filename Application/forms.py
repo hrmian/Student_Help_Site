@@ -1,7 +1,8 @@
 from django import forms
 from django.contrib.auth import authenticate
 from django.forms import PasswordInput
-from Application.models import Reply, Topic
+from Application.models import Reply, Topic, User
+from django.contrib.auth.forms import UserCreationForm
 
 
 class LoginForm(forms.Form):
@@ -23,15 +24,18 @@ class LoginForm(forms.Form):
         return user
 
 
-class SignupForm(forms.Form):
+class SignUpForm(forms.ModelForm):
     first_name = forms.CharField(widget=forms.TextInput(attrs={"placeholder": "First Name"}), max_length=100, required=True)
     last_name = forms.CharField(widget= forms.TextInput(attrs={"placeholder": "Last Name"}), max_length=100, required=True)
     email = forms.CharField(widget= forms.TextInput(attrs={"placeholder": "Email"}), max_length=20, required=True)
     role = forms.CharField(widget=forms.TextInput(attrs={"placeholder": "Role"}), max_length=100, required=True)
     username = forms.CharField(widget= forms.TextInput(attrs={"placeholder": "Username"}), max_length=100, required=True)
     password = forms.CharField(widget=PasswordInput(attrs={"placeholder": "Password"}), min_length=8, max_length=100, required=True)
-    confirm_password = forms.CharField(widget=PasswordInput(attrs={"placeholder": "Confirm Password"}),min_length=8,
-                                        max_length=100, required=True)
+    confirm_password = forms.CharField(widget=PasswordInput(attrs={"placeholder": "Confirm Password"}),min_length=8, max_length=100, required=True)
+
+    class Meta:
+        model = User
+        fields = ('username', 'first_name', 'last_name', 'email', 'role', 'username', 'password', 'confirm_password',)
 
 
 class ForgotPassForm(forms.Form):
