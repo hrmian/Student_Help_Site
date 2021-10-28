@@ -1,10 +1,7 @@
-from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import UserCreationForm
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
-from django.views import View
-from .forms import LoginForm, ForgotPassForm, SignUpForm, ReplyForm, TopicForm
+from .forms import ForgotPassForm, SignUpForm, ReplyForm, TopicForm
 from .models import User, Topic, Reply, Course
 
 
@@ -69,17 +66,11 @@ def sign_up(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
         if form.is_valid():
-            user = form.save()
-            user.refresh_from_db()
-            user.save()
-            username = form.cleaned_data.get('username')
-            raw_password = form.cleaned_data.get('password1')
-            user = form.save()
-            login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+            form.save()
             return redirect('home')
     else:
         form = SignUpForm()
-    return render(request, 'sign_up.html', {'form': SignUpForm()})
+    return render(request, 'registration/sign_up.html', {'form': form})
 
 
 def forgot_password(request):
