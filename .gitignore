@@ -3,4 +3,5 @@ env
 =======
 env
 .Help_Site\__pycache__
+.idea
 >>>>>>> main
