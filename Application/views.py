@@ -4,7 +4,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.views import View
-from .forms import ReplyForm, TopicForm
+from .forms import LoginForm, ForgotPassForm, SignupForm, ReplyForm, TopicForm
 from .models import User, Topic, Reply, Course
 
 
@@ -63,8 +63,10 @@ def topic(request, discussion_topic):
     form = ReplyForm()
     return render(request, 'topic.html', {'message': message, 'topic': t, 'replies': replies, 'form': form})
 
+
 def sign_up(request):
-    return render(request, 'sign_up.html')
+    return render(request, 'sign_up.html', {'form': SignupForm()})
+
 
 def forgot_password(request):
-    return render(request, 'forgot_password.html')
+    return render(request, 'forgot_password.html', {'form': ForgotPassForm()})
