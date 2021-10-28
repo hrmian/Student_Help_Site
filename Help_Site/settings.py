@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'Application'
+    'Application',
+    'ckeditor'
 ]
 
 MIDDLEWARE = [
@@ -129,6 +130,16 @@ STATIC_URL = '/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# Text editor settings
+CKEDITOR_CONFIGS = {
+    'default': {
+        'height': '100%',
+        'width': '100%',
+        'toolbarCanCollapse': False,
+    },
+}
+
+# Login
 AUTH_USER_MODEL = 'Application.User'
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'home'

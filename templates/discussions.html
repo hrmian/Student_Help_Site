@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <div class="col-10">
+        <div class="d-grid gap-2">
+            <div class="row">
+                <div class="col-4">
+                    <h2 class="float-start">Discussions</h2>
+                </div>
+                <div class="col 4">
+                <a class="btn btn-success float-end" href="{% url 'create_topic' %}">+ Post</a>
+                </div>
+            </div>
+            {% for t in topics %}
+                <div class="row">
+                    <a href="{% url 'topic' discussion_topic=t.id %} "
+                       class="btn btn-sm btn-outline-dark w-100 rounded-0" style="text-align:left;">{{ t.subject }}</a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    </div>
+{% endblock %}
