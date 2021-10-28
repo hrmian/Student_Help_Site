@@ -6,9 +6,9 @@ from django.contrib.auth.forms import UserCreationForm
 
 class SignUpForm(UserCreationForm):
     ROLES = (
-        ('Alum', 'Alum'),
-        ('Professor', 'Professor'),
         ('Student', 'Student'),
+        ('Professor', 'Professor'),
+        ('Alum', 'Alum'),
     )
 
     class Meta:
