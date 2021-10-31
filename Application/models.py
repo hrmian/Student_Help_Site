@@ -19,16 +19,14 @@ class Course(models.Model):
     professor = models.ForeignKey(User, on_delete=models.CASCADE)
 
 
-class Topic(models.Model):
+class Thread(models.Model):
     subject = models.CharField(max_length=40)
-    content = RichTextField(blank=True, null=True)
-    timestamp = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
 
 
-class Reply(models.Model):
+class Post(models.Model):
     content = RichTextField(blank=True, null=True)
     timestamp = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
+    thread = models.ForeignKey(Thread, on_delete=models.CASCADE)

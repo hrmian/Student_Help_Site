@@ -6,8 +6,9 @@
             <div class="form-group">
                 <form method="POST">
                     {% csrf_token %}
-                    {{ form.media }}
-                    {{ form.as_p }}
+                    {{ form1.as_p }}
+                    {{ form2.media }}
+                    {{ form2.as_p }}
                     <button class="btn btn-primary" type="submit">Post</button>
                 </form>
             </div>

@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <p>{{ message }}</p>
+    <h2>{{ thread.subject }}</h2>
+    {% for p in posts %}
+        <div class="card m-1" style="width:72rem">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-2 border">
+                        <div class="row">
+                            <div class="col ">
+                                <a class="card-link text-decoration-none"
+                                   href="{% url 'profile' username=p.user.username %}">{{ p.user.username }}</a>
+                            </div>
+                        </div>
+                        <div class="row text-center">
+                            {{ p.timestamp|date:'h:i' }}
+                        </div>
+                        <div class="row">
+                            {{ p.timestamp|date:'m/d/Y' }}
+                        </div>
+                    </div>
+                    <div class="col-9 text-start">
+                        {{ p.content | safe }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    <div class="card m-1" style="width:72rem">
+        <div class="card-body">
+            <div class="form-group">
+                <form method="POST">
+                    {% csrf_token %}
+                    {{ form.media }}
+                    {{ form.as_p }}
+                    <button class="btn btn-primary" type="submit">Post</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

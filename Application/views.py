@@ -1,8 +1,8 @@
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
-from .forms import ForgotPassForm, SignUpForm, ReplyForm, TopicForm
-from .models import User, Topic, Reply, Course
+from .forms import ForgotPassForm, SignUpForm, ThreadForm, PostForm
+from .models import User, Thread, Post, Course
 
 
 @login_required()
@@ -19,47 +19,50 @@ def user_profile(request, username):
 
 @login_required()
 def discussions(request, course_id):
-    topics = Topic.objects.filter(course__id=course_id)
-    return render(request, 'discussions.html', {'topics': topics, 'id': course_id})
+    threads = Thread.objects.filter(course__id=course_id)
+    return render(request, 'discussions.html', {'threads': threads, 'id': course_id})
 
 
 @login_required()
-def create_topic(request, course_id):
+def create_thread(request, course_id):
     # if this doesn't exist load error
     course = Course.objects.get(id=course_id)
 
     if request.method == 'POST':
-        form = TopicForm(request.POST)
-        if form.is_valid():
-            subject = form.cleaned_data.get('subject')
-            content = form.cleaned_data.get('content')
-            Topic.objects.create(subject=subject, content=content, user=request.user, course=course)
+        form1 = ThreadForm(request.POST)
+        form2 = PostForm(request.POST)
+        if form1.is_valid() and form2.is_valid():
+            subject = form1.cleaned_data.get('subject')
+            content = form2.cleaned_data.get('content')
+            new_thread = Thread.objects.create(subject=subject, user=request.user, course=course)
+            Post.objects.create(user=request.user, content=content, thread=new_thread)
             return redirect('discussions', course_id=course_id)
     else:
-        form = TopicForm()
-        return render(request, 'create_topic.html', {'form': form})
+        form1 = ThreadForm()
+        form2 = PostForm()
+        return render(request, 'create_thread.html', {'form1': form1, 'form2': form2})
 
 
 # clean up - split up?
 @login_required()
-def topic(request, discussion_topic):
+def thread(request, thread_id):
     t = None
-    replies = None
+    posts = None
     message = ''
-    if Topic.objects.filter(id=discussion_topic).exists():
-        t = Topic.objects.get(id=discussion_topic)
-        replies = Reply.objects.filter(topic__id=discussion_topic)
+    if Thread.objects.filter(id=thread_id).exists():
+        t = Thread.objects.get(id=thread_id)
+        posts = Post.objects.filter(thread__id=thread_id)
     else:
         message = "Topic does not exist"
 
     if request.method == 'POST':
-        form = ReplyForm(request.POST)
+        form = PostForm(request.POST)
         if form.is_valid():
             content = form.cleaned_data.get('content')
-            Reply.objects.create(content=content, user=request.user, topic=t)
+            Post.objects.create(content=content, user=request.user, thread=t)
 
-    form = ReplyForm()
-    return render(request, 'topic.html', {'message': message, 'topic': t, 'replies': replies, 'form': form})
+    form = PostForm()
+    return render(request, 'thread.html', {'message': message, 'thread': t, 'posts': posts, 'form': form})
 
 
 def sign_up(request):

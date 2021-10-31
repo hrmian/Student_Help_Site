@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import PasswordInput
-from Application.models import Reply, Topic, User
+from Application.models import Thread, Post, User
 from django.contrib.auth.forms import UserCreationForm
 
 
@@ -46,18 +46,15 @@ class ForgotPassForm(forms.Form):
                                        max_length=100, required=True)
 
 
-class TopicForm(forms.ModelForm):
+class ThreadForm(forms.ModelForm):
     class Meta:
-        model = Topic
-        fields = ('subject', 'content')
-        labels = {
-            'content': '',
-        }
+        model = Thread
+        fields = ('subject',)
 
 
-class ReplyForm(forms.ModelForm):
+class PostForm(forms.ModelForm):
     class Meta:
-        model = Reply
+        model = Post
         fields = ('content',)
         labels = {
             'content': '',
