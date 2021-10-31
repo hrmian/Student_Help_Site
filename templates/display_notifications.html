@@ -1,0 +1,35 @@
+{% load static %}
+<div>
+    <a class="nav-link" href="#" id="navbarDropdownMenuLink" role="button"
+       data-bs-toggle="dropdown" aria-expanded="false">
+        {% if notifications.count > 0 %}
+            <div class="d-inline-flex ms-4 mt-1">
+                <img src="{% static "images/bell.svg" %}" height="22">
+                <span class="badge badge-notify rounded-pill bg-danger">{{ notifications.count }}</span>
+            </div>
+        {% else %}
+            <div>
+                <img src="{% static "images/bell.svg" %}" height="22">
+            </div>
+        {% endif %}
+    </a>
+    <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-end" aria-labelledby="navbarDropdown">
+        {% for n in notifications %}
+            <li class="mx-2" style="min-width: 300px;">
+                <div class="row">
+                    <div class="col-10 float-start">
+                        <a class="me-2" href="#">{{ n.from_user }} did something</a>
+                    </div>
+                    <div class="col-2 float end">
+                        <span class="notification-close">&times;</span>
+                    </div>
+                </div>
+            </li>
+            </p>
+        {% endfor %}
+        <li>
+            <hr class="dropdown-divider">
+        </li>
+        <li><a class="dropdown-item" href="#">Clear</a></li>
+    </ul>
+</div>

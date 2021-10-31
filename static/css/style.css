@@ -4,3 +4,13 @@
     left: -8px;
     float: right;
   }
+
+.badge-notify {
+    transition: 0.3s;
+}
+
+.badge-notify:hover {
+    cursor: pointer;
+    opacity: 0.75;
+    transition: 0.3s;
+}
