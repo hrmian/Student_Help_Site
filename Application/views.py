@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from .forms import ForgotPassForm, SignUpForm, ThreadForm, PostForm
-from .models import User, Thread, Post, Course
+from .models import User, Thread, Post, Course, Notification
 
 
 @login_required()
@@ -63,6 +63,29 @@ def thread(request, thread_id):
 
     form = PostForm()
     return render(request, 'thread.html', {'message': message, 'thread': t, 'posts': posts, 'form': form})
+
+
+def thread_notification(request, notification_id, thread_id):
+    notification = Notification.objects.get(id=notification_id)
+    notification.seen = True
+    notification.save()
+    return redirect('thread', thread_id=thread_id)
+
+
+def clear_notification(request, notification_id):
+    notification = Notification.objects.get(id=notification_id)
+    notification.seen = True
+    notification.save()
+    return redirect(request.META.get('HTTP_REFERER'))
+
+
+def clear_all_notifications(request):
+    notifications = Notification.objects.filter(to_user=request.user)
+    for n in notifications:
+        n.seen = True
+        n.save()
+
+    return redirect(request.META.get('HTTP_REFERER'))
 
 
 def sign_up(request):

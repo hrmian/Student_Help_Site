@@ -27,4 +27,8 @@ urlpatterns = [
     path('discussions/<int:course_id>', views.discussions, name="discussions"),
     path('discussions/<int:course_id>/newthread', views.create_thread, name="create_thread"),
     path('thread/<int:thread_id>/', views.thread, name="thread"),
+    path('notification/<int:notification_id>/thread/<int:thread_id>', views.thread_notification,
+         name='thread_notification'),
+    path('notifications/clear_all', views.clear_all_notifications, name="clear_notifications"),
+    path('notifications/clear/<int:notification_id>', views.clear_notification, name='clear_notification')
 ]
