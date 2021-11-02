@@ -3,6 +3,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from .forms import ForgotPassForm, SignUpForm, ThreadForm, PostForm
 from .models import User, Thread, Post, Course, Notification, UserProfile
+from .services import subscribe, send_notifications
 
 
 @login_required()
@@ -37,6 +38,7 @@ def create_thread(request, course_id):
             content = form2.cleaned_data.get('content')
             new_thread = Thread.objects.create(subject=subject, user=request.user, course=course)
             Post.objects.create(user=request.user, content=content, thread=new_thread)
+            subscribe(request.user, new_thread)
             return redirect('discussions', course_id=course_id)
     else:
         form1 = ThreadForm()
@@ -61,6 +63,7 @@ def thread(request, thread_id):
         if form.is_valid():
             content = form.cleaned_data.get('content')
             Post.objects.create(content=content, user=request.user, thread=t)
+            send_notifications(request.user, t)
 
     form = PostForm()
     return render(request, 'thread.html', {'message': message, 'thread': t, 'posts': posts, 'form': form})
