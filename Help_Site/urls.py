@@ -16,6 +16,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from Application import views
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -30,5 +32,8 @@ urlpatterns = [
     path('notification/<int:notification_id>/thread/<int:thread_id>', views.thread_notification,
          name='thread_notification'),
     path('notifications/clear_all', views.clear_all_notifications, name="clear_notifications"),
-    path('notifications/clear/<int:notification_id>', views.clear_notification, name='clear_notification')
+    path('notifications/clear/<int:notification_id>', views.clear_notification, name='clear_notification'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

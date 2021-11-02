@@ -8,16 +8,17 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-2 border">
-                        <div class="row">
-                            <div class="col ">
-                                <a class="card-link text-decoration-none"
-                                   href="{% url 'profile' username=p.user.username %}">{{ p.user.username }}</a>
-                            </div>
+                        <div>
+                            <img src="{{ user.profile.image.url }}" width="75" height="75" class="my-2"/>
                         </div>
-                        <div class="row text-center">
+                        <div>
+                            <a class="card-link text-decoration-none"
+                               href="{% url 'profile' username=p.user.username %}">{{ p.user.username }}</a>
+                        </div>
+                        <div>
                             {{ p.timestamp|date:'h:i' }}
                         </div>
-                        <div class="row">
+                        <div>
                             {{ p.timestamp|date:'m/d/Y' }}
                         </div>
                     </div>

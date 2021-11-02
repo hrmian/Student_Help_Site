@@ -3,6 +3,9 @@
 {% block content %}
         <div class="card my-5" style="width: 24rem;">
         <div class="card-body my-1">
+            <p>
+                <img src="{{ user.profile.image.url }}" width="125" height="125"/>
+            </p>
             <h1 class="mb-4">{{ user.username }}</h1>
             <p>{{ user.first_name }} {{ user.last_name }}</p>
             <p>{{ user.role }}</p>

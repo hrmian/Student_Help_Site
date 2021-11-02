@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from .forms import ForgotPassForm, SignUpForm, ThreadForm, PostForm
-from .models import User, Thread, Post, Course, Notification
+from .models import User, Thread, Post, Course, Notification, UserProfile
 
 
 @login_required()
@@ -14,7 +14,8 @@ def home(request):
 @login_required()
 def user_profile(request, username):
     user = User.objects.get(username=username)
-    return render(request, 'profile.html', {'user': user})
+    profile = UserProfile.objects.get(user__id=user.id)
+    return render(request, 'profile.html', {'user': user, 'profile': profile})
 
 
 @login_required()
@@ -25,7 +26,7 @@ def discussions(request, course_id):
 
 @login_required()
 def create_thread(request, course_id):
-    # if this doesn't exist load error
+    # if this doesn't exist load error?
     course = Course.objects.get(id=course_id)
 
     if request.method == 'POST':
@@ -65,6 +66,7 @@ def thread(request, thread_id):
     return render(request, 'thread.html', {'message': message, 'thread': t, 'posts': posts, 'form': form})
 
 
+# redirect to thread by clicking on notification
 def thread_notification(request, notification_id, thread_id):
     notification = Notification.objects.get(id=notification_id)
     notification.seen = True
@@ -72,6 +74,7 @@ def thread_notification(request, notification_id, thread_id):
     return redirect('thread', thread_id=thread_id)
 
 
+# clear individual notification
 def clear_notification(request, notification_id):
     notification = Notification.objects.get(id=notification_id)
     notification.seen = True
@@ -79,6 +82,7 @@ def clear_notification(request, notification_id):
     return redirect(request.META.get('HTTP_REFERER'))
 
 
+# clear all unseen notifications
 def clear_all_notifications(request):
     notifications = Notification.objects.filter(to_user=request.user)
     for n in notifications:
