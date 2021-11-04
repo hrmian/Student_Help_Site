@@ -99,7 +99,8 @@ def sign_up(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
         if form.is_valid():
-            form.save()
+            user = form.save()
+            UserProfile.objects.create(user=user)
             return redirect('home')
     else:
         form = SignUpForm()
