@@ -29,6 +29,7 @@ class Course(models.Model):
 
 class Thread(models.Model):
     subject = models.CharField(max_length=40)
+    timestamp = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
 
