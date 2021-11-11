@@ -1,8 +1,8 @@
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
-from .forms import ForgotPassForm, SignUpForm, ThreadForm, PostForm
-from .models import User, Thread, Post, Course, Notification, UserProfile
+from .forms import *
+from .models import *
 from .services import subscribe, send_notifications
 
 
@@ -17,6 +17,28 @@ def user_profile(request, username):
     user = User.objects.get(username=username)
     profile = UserProfile.objects.get(user__id=user.id)
     return render(request, 'profile.html', {'user': user, 'profile': profile})
+
+
+@login_required()
+def user_settings(request, username):
+    user = User.objects.get(username=username)
+    profile = UserProfile.objects.get(user__id=user.id)
+    # return render(request, 'user_settings.html', {'user': user, 'profile': profile})
+    if request.method == 'POST':
+        form = EditAccount(request.POST, instance = request.user)
+        if form.is_valid():
+            user = form.save()
+            #UserProfile.objects.create(user=user)
+            return render(request, 'user_settings.html', {'user': user, 'profile': profile, 'form': form})
+    else:
+        form = EditAccount(instance = request.user)
+    return render(request, 'user_settings.html', {'user': user, 'profile': profile, 'form': form})
+
+@login_required()
+def settings(request, username):
+    user = User.objects.get(username=username)
+    profile = UserProfile.objects.get(user__id=user.id)
+    return render(request, 'settings.html', {'user': user, 'profile': profile})
 
 
 @login_required()
