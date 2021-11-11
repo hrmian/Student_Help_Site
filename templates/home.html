@@ -1,11 +1,14 @@
 {% extends 'base.html' %}
 {% block content %}
-        <div class="col-10">
+<div id="header">
+        <div class="col-12">
         <div class="d-grid gap-2">
             <div class="row">
-                <div class="col-4">
-                    <h2 class="float-start">Courses</h2>
+                <div class="d-flex justify-content-center col-12">
+                    <h1 class="row">Welcome to Student Helper Website!</h1> <br/>
                 </div>
+                <img src="https://uwm.edu/wp-content/uploads/2016/12/uwm-seo-default-image.jpg"/>
+
             </div>
             {% for c in courses %}
                 <div class="row">
