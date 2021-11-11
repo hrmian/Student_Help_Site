@@ -14,18 +14,26 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.contrib.auth import views as auth_views
 from django.urls import path, include
 from Application import views
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('accounts/', include('django.contrib.auth.urls')),
     path('', views.home, name="home"),
-    path('profile/<slug:username>', views.user_profile, name="profile"),
-    path('discussions/<int:course_id>', views.discussions, name="discussions"),
-    path('topics/<int:discussion_topic>/', views.topic, name="topic"),
-    path('newtopic/', views.create_topic, name="create_topic"),
+    path('accounts/', include('django.contrib.auth.urls')),
     path('accounts/sign_up', views.sign_up, name="sign_up"),
     path('accounts/forgot_password', views.forgot_password, name="forgot_password"),
+    path('profile/<slug:username>', views.user_profile, name="profile"),
+    path('discussions/<int:course_id>', views.discussions, name="discussions"),
+    path('discussions/<int:course_id>/newthread', views.create_thread, name="create_thread"),
+    path('thread/<int:thread_id>/', views.thread, name="thread"),
+    path('notification/<int:notification_id>/thread/<int:thread_id>', views.thread_notification,
+         name='thread_notification'),
+    path('notifications/clear_all', views.clear_all_notifications, name="clear_notifications"),
+    path('notifications/clear/<int:notification_id>', views.clear_notification, name='clear_notification'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

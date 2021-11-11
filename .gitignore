@@ -1,6 +1,8 @@
 <<<<<<< HEAD
 env
 =======
+db.sqlite3
 env
-.Help_Site\__pycache__
+Help_Site\__pycache__
+.idea
 >>>>>>> main
