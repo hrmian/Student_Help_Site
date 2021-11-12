@@ -8,8 +8,9 @@ from .services import subscribe, send_notifications
 
 @login_required()
 def home(request):
-    courses = Course.objects.all()
-    return render(request, 'home.html', {'courses': courses})
+    courses = Course.objects.all().order_by('name')
+    threads = Thread.objects.all().order_by('-timestamp');
+    return render(request, 'home.html', {'courses': courses, 'threads': threads})
 
 
 @login_required()
@@ -44,7 +45,8 @@ def settings(request, username):
 @login_required()
 def discussions(request, course_id):
     threads = Thread.objects.filter(course__id=course_id)
-    return render(request, 'discussions.html', {'threads': threads, 'id': course_id})
+    course = Course.objects.get(id=course_id)
+    return render(request, 'discussions.html', {'threads': threads, 'course': course})
 
 
 @login_required()

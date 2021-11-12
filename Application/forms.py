@@ -37,6 +37,7 @@ class SignUpForm(UserCreationForm):
 
         return user
 
+
 class EditAccount(forms.ModelForm):
     ROLES = (
         ('Student', 'Student'),

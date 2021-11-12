@@ -25,61 +25,43 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse w-100 " id="navbarSupportedContent">
-            {% if user.is_authenticated %}
-                <ul class="nav nav-tabs navbar-light col-10">
-                    <li class="nav-item">
-                        <a class="btn btn-light" aria-current="page" href="{% url 'home' %}">Home</a>
-                    </li>
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-light dropdown-toggle mx-2" data-bs-toggle="dropdown" aria-expanded="false">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="{% url 'home' %}">Home</a>
+                </li>
+                <li class nav-item dropdown>
+                    <div style="position: relative">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                           data-bs-toggle="dropdown" aria-expanded="false">
                             Courses
-                        </button>
+                        </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Add a Course</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#">Learn About a Course</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#">Ask About a Course</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#">Leave a Comment About a Course</a></li>
+                            <li><a class="dropdown-item" href="#">All Courses</a></li>
                         </ul>
                     </div>
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                </li>
+
+                <li class nav-item dropdown>
+                    <div style="position: relative">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                           data-bs-toggle="dropdown" aria-expanded="false">
                             People
-                        </button>
+                        </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Professors</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#">TAs</a></li>
-                            <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="#">Students</a></li>
-                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#">Professors</a></li>
                             <li><a class="dropdown-item" href="#">Alumni</a></li>
                         </ul>
                     </div>
+                </li>
+            </ul>
 
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-light dropdown-toggle mx-2" data-bs-toggle="dropdown" aria-expanded="false">
-                            Topics
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">My Topics</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#">Create a Topic</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#">Explore Topics</a></li>
-                        </ul>
-                    </div>
-                    <button type="button" class="btn btn-light" aria-expanded="false">
-                            My Discussions
-                    </button>
-                </ul>
-                <ul class="navbar-nav col-2">
+            {% if user.is_authenticated %}
+                <ul class="navbar-nav mr-auto">
                     <li class="nav-item dropdown">
                         {% display_notifications %}
                     </li>
-                    <li class="nav-item dropdown col-1">
+                    <li class="nav-item dropdown">
                         <a class="nav-link" href="#" id="navbarDropdownMenuLink" role="button"
                            data-bs-toggle="dropdown" aria-expanded="false">
                             <img src="{% static "images/person.svg" %}" alt="" height="28">
@@ -88,11 +70,16 @@
                             <li>
                                 <div class="dropdown-item-text">{{ user.username }}</div>
                             </li>
-                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
                             <li><a class="dropdown-item" href="{% url 'profile' username=user.username %}">Profile</a>
                             </li>
-                            <li><a class="dropdown-item" href="{% url 'settings' username=user.username %}">Settings</a></li>
-                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="{% url 'settings' username=user.username %}">Settings</a>
+                            </li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
                             <li><a class="dropdown-item" href="{% url 'logout' %}">Log out</a></li>
                         </ul>
                     </li>
@@ -101,8 +88,8 @@
         </div>
     </div>
 </nav>
-<div class="container my-3">
-    <div class="row justify-content-center">
+<div class="container col-10" id="content">
+    <div class="row justify-content-center p-3" id="test">
         {% block content %}
         {% endblock %}
     </div>
@@ -110,30 +97,27 @@
 </body>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 <style>
     body, html {
         height: 100%;
+        width: 100%;
         margin: 0;
         font-family: Arial, Helvetica, sans-serif;
+        background-color: #F5F5F5;
+        /*background-image: url('../static/images/uwm.png');
+        background-repeat: no-repeat;
+        background-attachment: fixed;*/
+    }
+
+    body {
+        display: table;
+        margin: 0;
     }
 
     .hero-image {
         background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("https://assets.change.org/photos/3/lu/mv/GflumvsQwduMvQs-800x450-noPad.jpg");
         height: 100%;
-        background-position: center;
+        background-position: left;
         background-repeat: no-repeat;
         background-size: cover;
         position: relative;
@@ -148,7 +132,7 @@
         color: white;
     }
 
-    .nav-item{
+    .nav-item {
         align-content: baseline;
     }
 
@@ -167,3 +151,13 @@
         background-color: #555;
         color: white;
     }
+
+    #content {
+        background-color: white;
+        height: 100%;
+        width: 100%;
+        border-color: #CCCCCC;
+        border-style: solid;
+        border-width: 0 1px 0 1px;
+    }
+</style>
