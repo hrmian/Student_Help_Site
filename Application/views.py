@@ -1,15 +1,16 @@
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
-from .forms import ForgotPassForm, SignUpForm, ThreadForm, PostForm
-from .models import User, Thread, Post, Course, Notification, UserProfile
+from .forms import *
+from .models import *
 from .services import subscribe, send_notifications
 
 
 @login_required()
 def home(request):
-    courses = Course.objects.all()
-    return render(request, 'home.html', {'courses': courses})
+    courses = Course.objects.all().order_by('name')
+    threads = Thread.objects.all().order_by('-timestamp');
+    return render(request, 'home.html', {'courses': courses, 'threads': threads})
 
 
 @login_required()
@@ -20,9 +21,32 @@ def user_profile(request, username):
 
 
 @login_required()
+def user_settings(request, username):
+    user = User.objects.get(username=username)
+    profile = UserProfile.objects.get(user__id=user.id)
+    # return render(request, 'user_settings.html', {'user': user, 'profile': profile})
+    if request.method == 'POST':
+        form = EditAccount(request.POST, instance = request.user)
+        if form.is_valid():
+            user = form.save()
+            #UserProfile.objects.create(user=user)
+            return render(request, 'user_settings.html', {'user': user, 'profile': profile, 'form': form})
+    else:
+        form = EditAccount(instance = request.user)
+    return render(request, 'user_settings.html', {'user': user, 'profile': profile, 'form': form})
+
+@login_required()
+def settings(request, username):
+    user = User.objects.get(username=username)
+    profile = UserProfile.objects.get(user__id=user.id)
+    return render(request, 'settings.html', {'user': user, 'profile': profile})
+
+
+@login_required()
 def discussions(request, course_id):
     threads = Thread.objects.filter(course__id=course_id)
-    return render(request, 'discussions.html', {'threads': threads, 'id': course_id})
+    course = Course.objects.get(id=course_id)
+    return render(request, 'discussions.html', {'threads': threads, 'course': course})
 
 
 @login_required()

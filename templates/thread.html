@@ -1,10 +1,17 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-    <p>{{ message }}</p>
-    <h2>{{ thread.subject }}</h2>
+    <div class="mb-5">
+        <a href="{% url 'discussions' course_id=thread.course.id %}" class="btn btn-light float-start text-left" style="text-align:center; border: 1px solid black;">
+            <img class="align-middle" src="{% static "images/arrow_left.svg" %}" alt="" width="25" height="25">
+            <span class="align-middle">{{thread.course.name }}</span>
+        </a>
+    </div>
+    <div class="col-12" style="width: 72rem;">
+        <h3 class="float-start">{{ thread.subject }}</h3>
+    </div>
     {% for p in posts %}
-        <div class="card m-1" style="width:72rem">
+        <div class="card m-0" style="width:72rem">
             <div class="card-body">
                 <div class="row">
                     <div class="col-2 border">

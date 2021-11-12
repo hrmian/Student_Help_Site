@@ -4,20 +4,25 @@
     <div class="col-10">
         <div class="d-grid gap-2">
             <div class="row">
+                <h1>{{ course.name }}</h1>
                 <div class="col-4">
-                    <h2 class="float-start">Discussions</h2>
+                    <h3 class="float-start">Discussions</h3>
                 </div>
                 <div class="col 4">
-                <a class="btn btn-success float-end" href="{% url 'create_thread' course_id=id %}">+ Post</a>
+                    <a class="btn btn-success float-end" href="{% url 'create_thread' course_id=course.id %}">+ Post</a>
                 </div>
             </div>
-            {% for t in threads %}
-                <div class="row">
+
+            <div class="list-group">
+                {% for t in threads %}
                     <a href="{% url 'thread' thread_id=t.id %} "
-                       class="btn btn-sm btn-outline-dark w-100 rounded-0" style="text-align:left;">{{ t.subject }}</a>
-                </div>
-            {% endfor %}
+                       class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+                       style="text-align:left;">
+                        {{ t.subject }}
+                        <span class="float-bottom"
+                              style="font-size: 0.8em;">{{ t.timestamp|date:'g:iA, M d' }}</span></a>
+                {% endfor %}
+            </div>
         </div>
-    </div>
     </div>
 {% endblock %}
