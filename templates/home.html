@@ -3,20 +3,29 @@
 <div id="header">
         <div class="col-12">
         <div class="d-grid gap-2">
-            <div class="row">
-                <div class="d-flex justify-content-center col-12">
-                    <h1 class="row">Welcome to Student Helper Website!</h1> <br/>
-                </div>
-                <img src="https://uwm.edu/wp-content/uploads/2016/12/uwm-seo-default-image.jpg"/>
 
-            </div>
+                <div class="inline-div">
+                    <h1>My Courses</h1>
+                </div>
             {% for c in courses %}
                 <div class="row">
                     <a href="{% url 'discussions' course_id=c.id %} "
-                       class="btn btn-sm btn-outline-dark w-100 rounded-0" style="text-align:left;">{{ c.name }}</a>
+                       class="btn btn-lg btn-outline-dark w-100 rounded-0 btn-light" style="text-align:left;">{{ c.name }}</a>
                 </div>
             {% endfor %}
         </div>
     </div>
 </div>
+
+
+<style>
+.inline-div {
+  display: inline;
+}
+h1
+{
+  text-align: left;
+}
+}
+</style>
 {% endblock %}
