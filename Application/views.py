@@ -3,7 +3,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from .forms import *
 from .models import *
-from .services import subscribe, send_notifications
+from .services import subscribe, send_notifications, report_post
 
 
 @login_required()
@@ -91,6 +91,24 @@ def thread(request, thread_id):
 
     form = PostForm()
     return render(request, 'thread.html', {'message': message, 'thread': t, 'posts': posts, 'form': form})
+
+@login_required()
+def reported(request, thread_id):
+        t = None
+        meessage = ''
+        if Thread.objects.filter(id=thread_id.exists()):
+            t = Thread.objects.get(id=thread_id)
+            message = "You have reported the thread."
+        else:
+            message = "ERROR: Thread does not exist"
+    
+    if request.method == 'POST':
+        form = ReportForm(request.POST)
+        if form.is_valid():
+            content = form
+
+    form = ReportForm()
+    return render(request, 'report.html', {'message': message, 'thread': t, 'form': form})
 
 
 # redirect to thread by clicking on notification

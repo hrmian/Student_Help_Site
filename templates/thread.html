@@ -32,6 +32,11 @@
                     <div class="col-9 text-start">
                         {{ p.content | safe }}
                     </div>
+                    <div class="form">
+                        <form method="POST">
+                            <a class="btn btn-danger" role="button" href="{url 'report_confirm' thread_id=thread.}">Report possible cheating</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
