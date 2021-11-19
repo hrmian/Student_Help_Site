@@ -55,8 +55,8 @@
                     </div>
                 </li>
             </ul>
-            <div class="topnav">
-                        <input type="text" placeholder="Search for a thead..">
+            <div class="topnav mb-2">
+                        <input type="text" placeholder="Search...">
                     </div>
             {% if user.is_authenticated %}
                 <ul class="navbar-nav mr-auto">
@@ -105,14 +105,13 @@
         width: 100%;
         margin: 0;
         font-family: Arial, Helvetica, sans-serif;
-        {#background-color: #F5F5F5;#}
-        background: linear-gradient(#D2F5F6, #A3BDE1);
+        background: linear-gradient(#D2F5F6, #A3BDE1) no-repeat fixed;
     }
 
-    {#body {#}
-    {#    display: table;#}
-    {#    margin: 0;#}
-    {#}#}
+    body {
+        display: table;
+        margin: 0;
+    }
 
     .nav-item {
         align-content: baseline;
