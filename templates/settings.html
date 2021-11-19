@@ -5,10 +5,14 @@
             <div class="row">
                 <h2 class="float-start">Settings</h2>
             </div>
-              <div class="list-group">
+            <div class="list-group">
                  <a href="{% url 'user_settings' username=user.username %}"
                     class="list-group-item list-group-item-action" style="text-align:left;">Account Settings</a>
-             </div>
+            </div>
+            <div class="list-group">
+                <a href="{% url 'admin_user_settings' username=user.username %}"
+                   class="list-group-item list-group-item-action" style="text-align:left;">Admin Settings</a>
+            </div>
              <!-- More buttons for other settings -->
              <!-- Most settings should be limited by role -->
         </div>

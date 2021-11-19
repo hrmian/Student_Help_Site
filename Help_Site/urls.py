@@ -28,6 +28,7 @@ urlpatterns = [
     path('profile/<slug:username>', views.user_profile, name="profile"),
     path('settings/<slug:username>', views.settings, name="settings"),
     path('settings/accountsettings/<slug:username>', views.user_settings, name="user_settings"),
+    path('settings/adminusersettings/<slug:username>', views.admin_user_settings, name="admin_user_settings"),
     path('discussions/<int:course_id>', views.discussions, name="discussions"),
     path('discussions/<int:course_id>/newthread', views.create_thread, name="create_thread"),
     path('thread/<int:thread_id>/', views.thread, name="thread"),
