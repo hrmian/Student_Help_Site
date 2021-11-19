@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block content %}
+        <div class="col-10">
+        <div class="d-grid gap-2">
+            <div class="row">
+                <h2 class="float-start">Settings</h2>
+            </div>
+            {% for u in users %}
+                <a href="{% url 'user_settings' username=u.username %}"
+                   class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+                   style="text-align:left;">
+                   {{ u.username }}
+                   <span class="float-bottom"
+                   style="font-size: 0.75em;">{{ u.first_name }}</span>
+                   <span class="float-bottom"
+                   style="font-size: 0.75em;">{{ u.last_name }}</span>
+                </a>
+                    
+            {% endfor %}
+             <!-- More buttons for other settings -->
+             <!-- Most settings should be limited by role -->
+        </div>
+    </div>
+</div>
+{% endblock %}
