@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from .forms import *
@@ -24,16 +25,22 @@ def user_profile(request, username):
 def user_settings(request, username):
     user = User.objects.get(username=username)
     profile = UserProfile.objects.get(user__id=user.id)
-    # return render(request, 'user_settings.html', {'user': user, 'profile': profile})
     if request.method == 'POST':
-        form = EditAccount(request.POST, instance = request.user)
+        form = EditAccount(request.POST, instance = user)
         if form.is_valid():
             user = form.save()
-            #UserProfile.objects.create(user=user)
             return render(request, 'user_settings.html', {'user': user, 'profile': profile, 'form': form})
     else:
-        form = EditAccount(instance = request.user)
+        form = EditAccount(instance = user)
     return render(request, 'user_settings.html', {'user': user, 'profile': profile, 'form': form})
+
+@login_required
+def admin_user_settings(request, username):
+    user = User.objects.get(username=username)
+    profile = UserProfile.objects.get(user__id=user.id)
+    users = User.objects.all().order_by('first_name')
+    return render(request, 'admin_user_settings.html', {'users': users})
+
 
 @login_required()
 def settings(request, username):
