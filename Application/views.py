@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .forms import *
 from .models import *
 from .services import subscribe, send_notifications
@@ -101,22 +101,25 @@ def thread(request, thread_id):
 
 
 # redirect to thread by clicking on notification
+@login_required()
 def thread_notification(request, notification_id, thread_id):
-    notification = Notification.objects.get(id=notification_id)
+    notification = get_object_or_404(Notification, id=notification_id, to_user=request.user)
     notification.seen = True
     notification.save()
     return redirect('thread', thread_id=thread_id)
 
 
 # clear individual notification
+@login_required()
 def clear_notification(request, notification_id):
-    notification = Notification.objects.get(id=notification_id)
+    notification = get_object_or_404(Notification, id=notification_id, to_user=request.user)
     notification.seen = True
     notification.save()
     return redirect(request.META.get('HTTP_REFERER'))
 
 
 # clear all unseen notifications
+@login_required()
 def clear_all_notifications(request):
     notifications = Notification.objects.filter(to_user=request.user)
     for n in notifications:
