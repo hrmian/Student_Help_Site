@@ -56,8 +56,10 @@
                 </li>
             </ul>
             <div class="topnav mb-2">
-                        <input type="text" placeholder="Search...">
-                    </div>
+                <form method="GET" action="/thread_search">
+                    <input type="text" name="q" placeholder="Search...">
+                </form>
+            </div>
             {% if user.is_authenticated %}
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item dropdown">

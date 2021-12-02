@@ -140,3 +140,10 @@ def sign_up(request):
 
 def forgot_password(request):
     return render(request, 'forgot_password.html', {'form': ForgotPassForm()})
+
+def thread_search(request):
+    q = request.GET.get("q", None)
+    res = []
+    if q is not None:
+        res = list(filter(lambda t: q in t.subject, Thread.objects.all()))
+    return render(request, 'thread_search_results.html', {'form': ThreadForm(), 'data': res, 'query': q})

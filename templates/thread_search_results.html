@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<head>
+    <div class="mb-5">
+        <h3 style="text-align:center;">Search Results for "<i><b>{{ query }}</b></i>"</h3>
+    </div>
+</head>
+<body>
+{% if data %}
+    {% for thread in data %}
+        <h5 style="text-align:left;"> Found in <b>{{ thread.course }}</b></h5>
+         <a href="{% url 'discussions' course_id=thread.id %} "
+                            class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+            style="text-align:left;">{{ thread.subject }}</a>
+        <hr/>
+    {% endfor %}
+{% else %}
+     <div class="mb-5">
+        <h3 style="text-align:left;">No Threads Found.</h3>
+    </div>
+{% endif %}
+
+</body>
+</html>
+{% endblock %}
