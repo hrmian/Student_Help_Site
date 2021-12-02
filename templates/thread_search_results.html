@@ -9,8 +9,8 @@
 <body>
 {% if data %}
     {% for thread in data %}
-        <h5 style="text-align:left;"> Found in <b>{{ thread.course }}</b></h5>
-         <a href="{% url 'discussions' course_id=thread.id %} "
+        <h5 style="text-align:left;"> Found in <b>{{ thread.course.name }}</b></h5>
+         <a href="{% url 'discussions' course_id=thread.course.id %} "
                             class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
             style="text-align:left;">{{ thread.subject }}</a>
         <hr/>
