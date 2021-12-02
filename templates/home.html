@@ -12,8 +12,8 @@
                 <div class="list-group">
                     {% for c in courses %}
                         <a href="{% url 'discussions' course_id=c.id %} "
-                           class=" btn btn-md btn-outline-dark rounded-0 btn-light my-1"
-                           style="text-align:left;">{{ c.name }}</a>
+                            class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+                               style="text-align:left;">{{ c.name }}</a>
                     {% endfor %}
                 </div>
             </div>

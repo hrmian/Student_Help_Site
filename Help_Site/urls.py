@@ -36,6 +36,7 @@ urlpatterns = [
          name='thread_notification'),
     path('notifications/clear_all', views.clear_all_notifications, name="clear_notifications"),
     path('notifications/clear/<int:notification_id>', views.clear_notification, name='clear_notification'),
+    path('thread_search/', views.thread_search, name="thread_search_results"),
 ]
 
 if settings.DEBUG:
