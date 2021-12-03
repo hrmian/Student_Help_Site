@@ -19,7 +19,7 @@ class UserProfile(models.Model):
                                 on_delete=models.CASCADE)
     bio = models.TextField(max_length=1000, blank=True, null=True)
     major = models.TextField(max_length=30, blank=True, null=True)
-    image = models.ImageField(upload_to='uploads/user_images', default='uploads/user_images/default.svg', blank=True)
+    image = models.ImageField(default='static/images/default_profile.svg', blank=True)
 
 
 class Course(models.Model):
@@ -39,9 +39,11 @@ class Post(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     thread = models.ForeignKey(Thread, on_delete=models.CASCADE)
+    visible = models.BooleanField(default=True)
 
 
 class Notification(models.Model):
+    # 1 = post in your thread, 2 = post has been flagged/hidden, 3 =
     notification_type = models.IntegerField()
     to_user = models.ForeignKey(User, related_name='notification_to', on_delete=models.CASCADE, null=True)
     from_user = models.ForeignKey(User, related_name='notification_from', on_delete=models.CASCADE, null=True)

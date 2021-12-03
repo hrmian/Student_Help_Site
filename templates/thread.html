@@ -2,13 +2,25 @@
 {% load static %}
 {% block content %}
     <div class="mb-5">
-        <a href="{% url 'discussions' course_id=thread.course.id %}" class="btn btn-light float-start text-left" style="text-align:center; border: 1px solid black;">
+        <a href="{% url 'discussions' course_id=thread.course.id %}" class="btn btn-light float-start text-left"
+           style="text-align:center; border: 1px solid black;">
             <img class="align-middle" src="{% static "images/arrow_left.svg" %}" alt="" width="25" height="25">
-            <span class="align-middle">{{thread.course.name }}</span>
+            <span class="align-middle">{{ thread.course.name }}</span>
         </a>
     </div>
     <div class="col-12" style="width: 72rem;">
         <h3 class="float-start">{{ thread.subject }}</h3>
+        {% if sub %}
+            <a class="float-end" style="text-decoration: none"
+               href="#">
+                <img src="{% static "images/heart_fill.svg" %}" alt="" height="20">
+            </a>
+        {% else %}
+            <a class="float-end" style="text-decoration: none"
+               href="#">
+                <img src="{% static "images/heart.svg" %}" alt="" height="20">
+            </a>
+        {% endif %}
     </div>
     {% for p in posts %}
         <div class="card m-0" style="width:72rem">
@@ -30,7 +42,36 @@
                         </div>
                     </div>
                     <div class="col-9 text-start">
-                        {{ p.content | safe }}
+                        {% if p.visible == True %}
+                            {{ p.content | safe }}
+                        {% elif p.visible == False %}
+                            {% if user.role == 'Professor' or user.role == 'Admin' or p.user == user %}
+                                {{ p.content | safe }}
+                                <p>This post has been hidden and is not visible to other users.</p>
+                            {% else %}
+                                <p>This post has been hidden.</p>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                    <div class="col-1 float-end text-end">
+                        {% if p.user == user %}
+                            <a class="me-2" style="text-decoration: none" href="#">
+                                <img src="{% static "images/pencil.svg" %}" alt="" height="16">
+                            </a>
+                        {% endif %}
+                        {% if user.role == 'Admin' or user.role == 'Professor' %}
+                            {% if p.visible == True %}
+                                <a style="text-decoration: none"
+                                   href="{% url 'hide_post' thread_id=thread.id post_id=p.id state=0 %}">
+                                    <img src="{% static "images/flag.svg" %}" alt="" height="16">
+                                </a>
+                            {% else %}
+                                <a style="text-decoration: none"
+                                   href="{% url 'hide_post' thread_id=thread.id post_id=p.id state=1 %}">
+                                    <img src="{% static "images/flag_fill.svg" %}" alt="" height="16">
+                                </a>
+                            {% endif %}
+                        {% endif %}
                     </div>
                 </div>
             </div>

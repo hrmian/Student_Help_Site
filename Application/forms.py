@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import PasswordInput
-from Application.models import Thread, Post, User
+from Application.models import Thread, Post, User, Course
 from django.contrib.auth.forms import UserCreationForm
 
 
@@ -76,6 +76,12 @@ class ForgotPassForm(forms.Form):
                                    max_length=100, required=True)
     confirm_password = forms.CharField(widget=PasswordInput(attrs={"placeholder": "Confirm Password"}), min_length=8,
                                        max_length=100, required=True)
+
+
+class CourseForm(forms.ModelForm):
+    class Meta:
+        model = Course
+        fields = ('name',)
 
 
 class ThreadForm(forms.ModelForm):

@@ -37,6 +37,9 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="#">All Courses</a></li>
+                            {% if user.role == 'Professor' %}
+                                <li><a class="dropdown-item" href="{% url 'create_course' %}">Create new course</a></li>
+                            {% endif %}
                         </ul>
                     </div>
                 </li>

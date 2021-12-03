@@ -4,7 +4,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import *
 from .models import *
-from .services import subscribe, send_notifications
+from .services import subscribe, send_thread_notifications, check_subscription
 
 
 @login_required()
@@ -34,6 +34,7 @@ def user_settings(request, username):
         form = EditAccount(instance = user)
     return render(request, 'user_settings.html', {'user': user, 'profile': profile, 'form': form})
 
+
 @login_required
 def admin_user_settings(request, username):
     user = User.objects.get(username=username)
@@ -54,6 +55,23 @@ def discussions(request, course_id):
     threads = Thread.objects.filter(course__id=course_id)
     course = Course.objects.get(id=course_id)
     return render(request, 'discussions.html', {'threads': threads, 'course': course})
+
+
+@login_required()
+def create_course(request):
+    user = request.user
+    if user.role != 'Professor':
+        return redirect(request.META.get('HTTP_REFERER'))
+
+    if request.method == "POST":
+        form = CourseForm(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data.get('name')
+            new_course = Course.objects.create(name=name, professor=user)
+            return redirect('discussions', course_id=new_course.id)
+    else:
+        form = CourseForm()
+        return render(request, 'create_course.html', {'form': form, 'user': user})
 
 
 @login_required()
@@ -86,6 +104,7 @@ def thread(request, thread_id):
     if Thread.objects.filter(id=thread_id).exists():
         t = Thread.objects.get(id=thread_id)
         posts = Post.objects.filter(thread__id=thread_id)
+        sub = check_subscription(request.user, t)
     else:
         message = "Topic does not exist"
 
@@ -94,10 +113,23 @@ def thread(request, thread_id):
         if form.is_valid():
             content = form.cleaned_data.get('content')
             Post.objects.create(content=content, user=request.user, thread=t)
-            send_notifications(request.user, t)
+            send_thread_notifications(request.user, t)
+            return redirect('thread', thread_id=t.id)
 
     form = PostForm()
-    return render(request, 'thread.html', {'message': message, 'thread': t, 'posts': posts, 'form': form})
+    return render(request, 'thread.html', {'message': message, 'thread': t, 'posts': posts, 'sub': sub, 'form': form})
+
+
+def hide_post(request, thread_id, post_id, state):
+    post = Post.objects.get(id=post_id)
+    t = Thread.objects.get(id=thread_id)
+    if state == 0:
+        post.visible = False
+        Notification.objects.create(to_user=post.user, from_user=request.user, thread=t, notification_type=2)
+    else:
+        post.visible = True
+    post.save()
+    return redirect('thread', thread_id=thread_id)
 
 
 # redirect to thread by clicking on notification
@@ -143,6 +175,7 @@ def sign_up(request):
 
 def forgot_password(request):
     return render(request, 'forgot_password.html', {'form': ForgotPassForm()})
+
 
 def thread_search(request):
     q = request.GET.get("q", None)

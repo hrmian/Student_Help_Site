@@ -18,7 +18,11 @@
             <li class="mx-2" style="min-width: 300px;">
                 <div class="row justify-content-end pe-3">
                     <div class="col-11">
-                        <a href="{% url 'thread_notification' n.id n.thread.id%}" class="text-decoration-none">{{ n.from_user }} replied to {{ n.thread.subject }}</a>
+                        {% if n.notification_type == 1 %}
+                            <a href="{% url 'thread_notification' n.id n.thread.id%}" class="text-decoration-none">{{ n.from_user }} replied to "{{ n.thread.subject }}"</a>
+                        {% elif n.notification_type == 2 %}
+                            <a href="{% url 'thread_notification' n.id n.thread.id%}" class="text-decoration-none">Your post in "{{ n.thread.subject }}" has been flagged by a moderator.</a>
+                        {% endif %}
                     </div>
                     <div class="col-1">
                         <a href="{% url 'clear_notification' n.id %}" class="notification-close text-decoration-none">&times;</a>

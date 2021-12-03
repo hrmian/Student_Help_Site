@@ -7,8 +7,15 @@ def subscribe(user, thread):
         Subscription.objects.create(user=user, thread=thread)
 
 
+def check_subscription(user, thread):
+    if Subscription.objects.filter(user=user, thread=thread).exists():
+        return True
+    else:
+        return False
+
+
 # send out a notification to all users subscribed to a thread
-def send_notifications(from_user, thread):
+def send_thread_notifications(from_user, thread):
     subscriptions = Subscription.objects.filter(thread=thread)
     for s in subscriptions:
         # from_user != s.user:

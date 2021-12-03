@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% include static %}
+{% block content %}
+    <div class="card m-1" style="width:72rem">
+        <div class="card-body">
+            <div class="form-group">
+                <form method="POST">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button class="btn btn-primary" type="submit">Create</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

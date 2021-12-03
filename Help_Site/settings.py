@@ -26,6 +26,7 @@ SECRET_KEY = 'django-insecure-yvio-utt*k*ye=sv4_)r8e4g=r2&#_en8a77tc_ttpo*s8h_l8
 DEBUG = True
 
 ALLOWED_HOSTS = []
+#ALLOWED_HOSTS = ['shs-cs595.azurewebsites.net']
 
 
 # Application definition
@@ -43,6 +44,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -72,8 +74,9 @@ TEMPLATES = [
 STATICFILES_DIRS = [
     BASE_DIR / "static"
 ]
-MEDIA_ROOT = BASE_DIR / 'media'
-MEDIA_URL = '/media/'
+
+#MEDIA_ROOT = BASE_DIR / 'media'
+#MEDIA_URL = '/media/'
 
 WSGI_APPLICATION = 'Help_Site.wsgi.application'
 
@@ -126,6 +129,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
