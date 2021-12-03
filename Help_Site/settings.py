@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-yvio-utt*k*ye=sv4_)r8e4g=r2&#_en8a77tc_ttpo*s8h_l8
 DEBUG = True
 
 ALLOWED_HOSTS = []
-#ALLOWED_HOSTS = ['shs-cs595.azurewebsites.net']
+# ALLOWED_HOSTS = ['shs-cs595.azurewebsites.net']
 
 
 # Application definition

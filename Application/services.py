@@ -18,8 +18,8 @@ def check_subscription(user, thread):
 def send_thread_notifications(from_user, thread):
     subscriptions = Subscription.objects.filter(thread=thread)
     for s in subscriptions:
-        if from_user != s.user:
-            Notification.objects.create(to_user=s.user, from_user=from_user, thread=thread, notification_type=1)
+        # if from_user != s.user:
+        Notification.objects.create(to_user=s.user, from_user=from_user, thread=thread, notification_type=1)
 
 
 # submit a report on a post for possible cheating
