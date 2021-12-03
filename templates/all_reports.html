@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <div class="col-12" style="width: 72rem;">
+        <h3 class="float-start">All reports</h3>
+    </div>
+    {% for p in reports %}
+        <div class="card m-0" style="width:72rem">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-2 border">
+                        <div>
+                            <img src="{{ user.profile.image.url }}" width="75" height="75" class="my-2"/>
+                        </div>
+                        <div>
+                            <a class="card-link text-decoration-none"
+                               href="{% url 'profile' username=p.reportedPost.user.username %}">{{ p.reportedPost.userReported.username }}</a>
+                        </div>
+                        <div>
+                            {{ p.reportedPost.timestamp|date:'h:i' }}
+                        </div>
+                        <div>
+                            {{ p.reportedPost.timestamp|date:'m/d/Y' }}
+                        </div>
+                    </div>
+                    <div class="col-9 text-start">
+                        {{ p.reportedPost.content | safe }}
+                    </div>
+                    <a class="btn btn-primary" role="button" href="{% url 'thread' thread_id=p.reportedPost.thread.id %}">Full thread</a>
+                    <a class="btn btn-danger" role="button" href="filler">Is cheating</a>
+                    <a class="btn btn-success" role="button" href="filler">Not cheating</a>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}

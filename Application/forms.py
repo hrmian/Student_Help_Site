@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import PasswordInput
-from Application.models import Report, Thread, Post, User
+from Application.models import Thread, Post, User
 from django.contrib.auth.forms import UserCreationForm
 
 
@@ -91,8 +91,3 @@ class PostForm(forms.ModelForm):
         labels = {
             'content': '',
         }
-
-class ReportForm(forms.ModelForm):
-    class Meta:
-        model = Report
-        

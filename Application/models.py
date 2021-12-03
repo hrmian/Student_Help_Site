@@ -53,3 +53,8 @@ class Notification(models.Model):
 class Subscription(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     thread = models.ForeignKey(Thread, on_delete=models.CASCADE)
+
+class Report(models.Model):
+    userReporting = models.ForeignKey(User, related_name='user_reporting', on_delete=models.CASCADE)
+    userReported = models.ForeignKey(User, related_name='user_reported', on_delete=models.CASCADE)
+    reportedPost = models.ForeignKey(Post, on_delete=models.CASCADE)

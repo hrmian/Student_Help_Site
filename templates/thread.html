@@ -34,7 +34,7 @@
                     </div>
                     <div class="form">
                         <form method="POST">
-                            <a class="btn btn-danger" role="button" href="{url 'report_confirm' thread_id=thread.}">Report possible cheating</button>
+                            <a class="btn btn-danger" role="button" href="{% url 'reported' post_id=p.id %}">Report possible cheating</a>
                         </form>
                     </div>
                 </div>

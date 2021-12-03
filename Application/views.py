@@ -93,22 +93,36 @@ def thread(request, thread_id):
     return render(request, 'thread.html', {'message': message, 'thread': t, 'posts': posts, 'form': form})
 
 @login_required()
-def reported(request, thread_id):
-        t = None
-        meessage = ''
-        if Thread.objects.filter(id=thread_id.exists()):
-            t = Thread.objects.get(id=thread_id)
-            message = "You have reported the thread."
-        else:
-            message = "ERROR: Thread does not exist"
-    
-    if request.method == 'POST':
-        form = ReportForm(request.POST)
-        if form.is_valid():
-            content = form
+def reported(request, post_id):
+    p = None
+    meessage = ''
+    if Post.objects.filter(id=post_id).exists():
+        p = Post.objects.get(id=post_id)
+        message = "You have reported the post."
+        report_post(reportedPost=p, userReporting=request.user, userReported=p.user)
+            
+    else:
+        message = "ERROR: Post does not exist"
+    return render(request, 'reported.html', {'message': message})
 
-    form = ReportForm()
-    return render(request, 'report.html', {'message': message, 'thread': t, 'form': form})
+@login_required()
+def reportedMessages(request):
+    reports = None
+    if User.objects.get(id=request.user.id).role=='Admin':
+        reports = Report.objects.all()
+    return render(request, 'all_reports.html', {'reports': reports})
+
+@login_required()
+def report_closed(request, report_id, verdict):
+    if User.objects.get(id=request.user.id).role=='Admin' & Report.object.filter(id=report_id).exists():
+        message=None
+        if verdict==1:
+            Report.objects.filter(id=report_id).reportedPost.objects.delete()
+            message = 'Report closed: Post deleted'
+        else:
+            Report.objects.filter(id=report_id).delete()
+            message = 'Report closed: Deletion denied'
+    return render(request, 'report_closed.html', {'message': message})
 
 
 # redirect to thread by clicking on notification
