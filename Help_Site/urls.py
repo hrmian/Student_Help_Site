@@ -33,16 +33,17 @@ urlpatterns = [
     path('discussions/<int:course_id>/newthread', views.create_thread, name="create_thread"),
     path('discussions/newcourse', views.create_course, name="create_course"),
     path('thread/<int:thread_id>/', views.thread, name="thread"),
+    path('thread/<int:thread_id>/subscribe', views.thread_subscribe, name="thread_subscribe"),
     path('reported/<int:post_id>/', views.reported, name="reported"),
-    path('reports', views.reportedMessages, name='all_reports'),
-    path('report_closed', views.report_closed, name='report_closed'),
+    path('reports', views.reports_page, name='all_reports'),
+    path('report_closed/<int:report_id>/<int:verdict>', views.report_closed, name='report_closed'),
+    path('edit/<int:post_id>', views.edit_post, name="edit_post"),
     path('thread/<int:thread_id>/flag/<int:post_id>/<int:state>', views.hide_post, name="hide_post"),
     path('notification/<int:notification_id>/thread/<int:thread_id>', views.thread_notification,
          name='thread_notification'),
+    path('notification/<int:notification_id>/', views.report_notification,
+         name='report_notification'),
     path('notifications/clear_all', views.clear_all_notifications, name="clear_notifications"),
     path('notifications/clear/<int:notification_id>', views.clear_notification, name='clear_notification'),
     path('thread_search/', views.thread_search, name="thread_search_results"),
 ]
-
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

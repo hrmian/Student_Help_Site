@@ -9,15 +9,18 @@
         </a>
     </div>
     <div class="col-12" style="width: 72rem;">
+        <h5 class="float-middle">{{ message }}</h5>
+    </div>
+    <div class="col-12" style="width: 72rem;">
         <h3 class="float-start">{{ thread.subject }}</h3>
         {% if sub %}
             <a class="float-end" style="text-decoration: none"
-               href="#">
+               href="{% url 'thread_subscribe' thread_id=thread.id %}">
                 <img src="{% static "images/heart_fill.svg" %}" alt="" height="20">
             </a>
         {% else %}
             <a class="float-end" style="text-decoration: none"
-               href="#">
+               href="{% url 'thread_subscribe' thread_id=thread.id %}">
                 <img src="{% static "images/heart.svg" %}" alt="" height="20">
             </a>
         {% endif %}
@@ -55,28 +58,28 @@
                     </div>
                     <div class="col-1 float-end text-end">
                         {% if p.user == user %}
-                            <a class="me-2" style="text-decoration: none" href="#">
-                                <img src="{% static "images/pencil.svg" %}" alt="" height="16">
+                            <a class="me-2" style="text-decoration: none" href="{% url 'edit_post' post_id=p.id %}">
+                                <img src="{% static "images/pencil.svg" %}" alt="" height="20">
                             </a>
                         {% endif %}
                         {% if user.role == 'Admin' or user.role == 'Professor' %}
                             {% if p.visible == True %}
                                 <a style="text-decoration: none"
                                    href="{% url 'hide_post' thread_id=thread.id post_id=p.id state=0 %}">
-                                    <img src="{% static "images/flag.svg" %}" alt="" height="16">
+                                    <img src="{% static "images/flag.svg" %}" alt="" height="20">
                                 </a>
                             {% else %}
                                 <a style="text-decoration: none"
                                    href="{% url 'hide_post' thread_id=thread.id post_id=p.id state=1 %}">
-                                    <img src="{% static "images/flag_fill.svg" %}" alt="" height="16">
+                                    <img src="{% static "images/flag_fill.svg" %}" alt="" height="20">
                                 </a>
                             {% endif %}
+                        {% elif p.user != user %}
+                            <a style="text-decoration: none"
+                               href="{% url 'reported' post_id=p.id %}">
+                                <img src="{% static "images/exclamation.svg" %}" alt="" height="20">
+                            </a>
                         {% endif %}
-                    </div>
-                    <div class="form">
-                        <form method="POST">
-                            <a class="btn btn-danger" role="button" href="{% url 'reported' post_id=p.id %}">Report possible cheating</a>
-                        </form>
                     </div>
                 </div>
             </div>

@@ -43,7 +43,7 @@ class Post(models.Model):
 
 
 class Notification(models.Model):
-    # 1 = post in your thread, 2 = post has been flagged/hidden, 3 =
+    # 1 = post in subscribed thread, 2 = user's post has been flagged/hidden, 3 = professor received a report
     notification_type = models.IntegerField()
     to_user = models.ForeignKey(User, related_name='notification_to', on_delete=models.CASCADE, null=True)
     from_user = models.ForeignKey(User, related_name='notification_from', on_delete=models.CASCADE, null=True)
@@ -56,7 +56,9 @@ class Subscription(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     thread = models.ForeignKey(Thread, on_delete=models.CASCADE)
 
+
 class Report(models.Model):
     userReporting = models.ForeignKey(User, related_name='user_reporting', on_delete=models.CASCADE)
     userReported = models.ForeignKey(User, related_name='user_reported', on_delete=models.CASCADE)
     reportedPost = models.ForeignKey(Post, on_delete=models.CASCADE)
+    open = models.BooleanField(default=True)

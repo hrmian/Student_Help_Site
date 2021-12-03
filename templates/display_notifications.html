@@ -22,6 +22,8 @@
                             <a href="{% url 'thread_notification' n.id n.thread.id%}" class="text-decoration-none">{{ n.from_user }} replied to "{{ n.thread.subject }}"</a>
                         {% elif n.notification_type == 2 %}
                             <a href="{% url 'thread_notification' n.id n.thread.id%}" class="text-decoration-none">Your post in "{{ n.thread.subject }}" has been flagged by a moderator.</a>
+                        {% elif n.notification_type == 3 %}
+                            <a href="{% url 'report_notification' n.id %}" class="text-decoration-none">A post in "{{ n.thread.subject }}" has been reported.</a>
                         {% endif %}
                     </div>
                     <div class="col-1">

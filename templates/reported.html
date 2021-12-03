@@ -1,5 +1,12 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-    <p>{{ message }}</p>
+    <div class="mb-5">
+        <a href="{% url 'thread' thread_id=thread.id %}" class="btn btn-light float-start text-left"
+           style="text-align:center; border: 1px solid black;">
+            <img class="align-middle" src="{% static "images/arrow_left.svg" %}" alt="" width="25" height="25">
+            <span class="align-middle">Back</span>
+        </a>
+        <p class="my-3">{{ message }}</p>
+    </div>
 {% endblock %}

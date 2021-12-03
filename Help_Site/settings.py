@@ -30,7 +30,6 @@ ALLOWED_HOSTS = []
 
 
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -74,9 +73,6 @@ TEMPLATES = [
 STATICFILES_DIRS = [
     BASE_DIR / "static"
 ]
-
-#MEDIA_ROOT = BASE_DIR / 'media'
-#MEDIA_URL = '/media/'
 
 WSGI_APPLICATION = 'Help_Site.wsgi.application'
 

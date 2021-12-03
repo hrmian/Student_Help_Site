@@ -120,6 +120,33 @@ def thread(request, thread_id):
     return render(request, 'thread.html', {'message': message, 'thread': t, 'posts': posts, 'sub': sub, 'form': form})
 
 
+def thread_subscribe(request, thread_id):
+    t = Thread.objects.get(id=thread_id)
+    if Subscription.objects.filter(user=request.user, thread=t).exists():
+        Subscription.objects.filter(user=request.user, thread=t).delete()
+    else:
+        Subscription.objects.create(user=request.user, thread=t)
+
+    return redirect('thread', thread_id=t.id)
+
+
+def edit_post(request, post_id):
+    post = Post.objects.get(id=post_id)
+    t = post.thread
+
+    if request.method == 'POST':
+        form = PostForm(request.POST, instance=post)
+        if form.is_valid():
+            content = form.cleaned_data.get('content')
+            post.content = content
+            post.save()
+            send_thread_notifications(request.user, t)
+            return redirect('thread', thread_id=t.id)
+
+    form = PostForm(instance=post)
+    return render(request, 'edit_post.html', {'form': form})
+
+
 def hide_post(request, thread_id, post_id, state):
     post = Post.objects.get(id=post_id)
     t = Thread.objects.get(id=thread_id)
@@ -131,10 +158,11 @@ def hide_post(request, thread_id, post_id, state):
     post.save()
     return redirect('thread', thread_id=thread_id)
 
+
 @login_required()
 def reported(request, post_id):
     p = None
-    meessage = ''
+    message = ''
     if Post.objects.filter(id=post_id).exists():
         p = Post.objects.get(id=post_id)
         message = "You have reported the post."
@@ -142,26 +170,40 @@ def reported(request, post_id):
 
     else:
         message = "ERROR: Post does not exist"
-    return render(request, 'reported.html', {'message': message})
+    return render(request, 'reported.html', {'message': message, 'thread': p.thread})
+
 
 @login_required()
-def reportedMessages(request):
-    reports = None
-    if User.objects.get(id=request.user.id).role=='Admin':
-        reports = Report.objects.all()
+def reports_page(request):
+    reports = get_reports(request)
     return render(request, 'all_reports.html', {'reports': reports})
+
 
 @login_required()
 def report_closed(request, report_id, verdict):
-    if User.objects.get(id=request.user.id).role=='Admin' & Report.object.filter(id=report_id).exists():
-        message=None
-        if verdict==1:
-            Report.objects.filter(id=report_id).reportedPost.objects.delete()
-            message = 'Report closed: Post deleted'
-        else:
-            Report.objects.filter(id=report_id).delete()
-            message = 'Report closed: Deletion denied'
-    return render(request, 'report_closed.html', {'message': message})
+    message = None
+    report = Report.objects.get(id=report_id)
+    post = report.reportedPost
+    if verdict == 1:
+        post.visible = False
+        message = 'Report closed: Post hidden.'
+    else:
+        message = 'Report dismissed.'
+
+    report.open = False
+    post.save()
+    report.save()
+    reports = get_reports(request)
+    return render(request, 'all_reports.html', {'reports': reports, 'message': message})
+
+
+# redirect to thread by clicking on notification
+@login_required()
+def report_notification(request, notification_id):
+    notification = get_object_or_404(Notification, id=notification_id, to_user=request.user)
+    notification.seen = True
+    notification.save()
+    return redirect('all_reports')
 
 
 # redirect to thread by clicking on notification
@@ -210,8 +252,8 @@ def forgot_password(request):
 
 
 def thread_search(request):
-    q = request.GET.get("q", None)
+    q = request.GET.get("q", None).lower()
     res = []
     if q is not None:
-        res = list(filter(lambda t: q in t.subject, Thread.objects.all()))
+        res = list(filter(lambda t: q in t.subject.lower(), Thread.objects.all()))
     return render(request, 'thread_search_results.html', {'form': ThreadForm(), 'data': res, 'query': q})
