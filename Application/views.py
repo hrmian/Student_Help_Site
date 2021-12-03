@@ -4,7 +4,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import *
 from .models import *
-from .services import subscribe, send_thread_notifications, check_subscription
+from .services import *
 
 
 @login_required()
@@ -130,6 +130,38 @@ def hide_post(request, thread_id, post_id, state):
         post.visible = True
     post.save()
     return redirect('thread', thread_id=thread_id)
+
+@login_required()
+def reported(request, post_id):
+    p = None
+    meessage = ''
+    if Post.objects.filter(id=post_id).exists():
+        p = Post.objects.get(id=post_id)
+        message = "You have reported the post."
+        report_post(reportedPost=p, userReporting=request.user, userReported=p.user)
+
+    else:
+        message = "ERROR: Post does not exist"
+    return render(request, 'reported.html', {'message': message})
+
+@login_required()
+def reportedMessages(request):
+    reports = None
+    if User.objects.get(id=request.user.id).role=='Admin':
+        reports = Report.objects.all()
+    return render(request, 'all_reports.html', {'reports': reports})
+
+@login_required()
+def report_closed(request, report_id, verdict):
+    if User.objects.get(id=request.user.id).role=='Admin' & Report.object.filter(id=report_id).exists():
+        message=None
+        if verdict==1:
+            Report.objects.filter(id=report_id).reportedPost.objects.delete()
+            message = 'Report closed: Post deleted'
+        else:
+            Report.objects.filter(id=report_id).delete()
+            message = 'Report closed: Deletion denied'
+    return render(request, 'report_closed.html', {'message': message})
 
 
 # redirect to thread by clicking on notification

@@ -73,6 +73,11 @@
                             {% endif %}
                         {% endif %}
                     </div>
+                    <div class="form">
+                        <form method="POST">
+                            <a class="btn btn-danger" role="button" href="{% url 'reported' post_id=p.id %}">Report possible cheating</a>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
