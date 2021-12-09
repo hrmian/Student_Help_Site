@@ -5,7 +5,7 @@ from Application.models import User, Course, Thread, Notification
 
 class TestNotifications(TestCase):
     def setUp(self) -> None:
-        user = User(username="user1", email="user2@gmail.com")
+        user = User(username="user1", email="user1@gmail.com")
         user.set_password("12345678")
         user.save()
         self.user = user

@@ -14,7 +14,7 @@ class TestLogin(TestCase):
         response = self.client.post('/', {'j_username': self.user.email, 'j_password': self.user.password})
         self.assertEqual(response.url, '/accounts/login/?next=/',
                          'Incorrect redirect after the existing user logged in')
-        response = self.client.get('/accounts/login/?next=/')
+        response = self.client.get('accounts/login/?next=/')
 
     def test_invalidLogin(self):
         response = self.client.post('/', {'j_username': self.user.email, 'j_password': 4215165}, follow=True)
