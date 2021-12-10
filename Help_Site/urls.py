@@ -20,30 +20,42 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
     path('', views.home, name="home"),
     path('accounts/', include('django.contrib.auth.urls')),
     path('accounts/sign_up', views.sign_up, name="sign_up"),
     path('accounts/forgot_password', views.forgot_password, name="forgot_password"),
-    path('profile/<slug:username>', views.user_profile, name="profile"),
-    path('settings/<slug:username>', views.settings, name="settings"),
-    path('settings/accountsettings/<slug:username>', views.user_settings, name="user_settings"),
-    path('settings/adminusersettings/<slug:username>', views.admin_user_settings, name="admin_user_settings"),
+
+    path('admin/', admin.site.urls),
+
     path('discussions/<int:course_id>', views.discussions, name="discussions"),
     path('discussions/<int:course_id>/newthread', views.create_thread, name="create_thread"),
     path('discussions/newcourse', views.create_course, name="create_course"),
-    path('thread/<int:thread_id>/', views.thread, name="thread"),
-    path('thread/<int:thread_id>/subscribe', views.thread_subscribe, name="thread_subscribe"),
-    path('reported/<int:post_id>/', views.reported, name="reported"),
-    path('reports', views.reports_page, name='all_reports'),
-    path('report_closed/<int:report_id>/<int:verdict>', views.report_closed, name='report_closed'),
+
     path('edit/<int:post_id>', views.edit_post, name="edit_post"),
-    path('thread/<int:thread_id>/flag/<int:post_id>/<int:state>', views.hide_post, name="hide_post"),
+
+    path('messages/<slug:username>', views.messages, name="messages"),
+    path('messages/conversation/<int:conversation_id>', views.conversation, name="conversation"),
+    path('messages/new_conversation/<slug:username>', views.new_conversation, name="new_conversation"),
+
     path('notification/<int:notification_id>/thread/<int:thread_id>', views.thread_notification,
          name='thread_notification'),
     path('notification/<int:notification_id>/', views.report_notification,
          name='report_notification'),
     path('notifications/clear_all', views.clear_all_notifications, name="clear_notifications"),
     path('notifications/clear/<int:notification_id>', views.clear_notification, name='clear_notification'),
+
+    path('profile/<slug:username>', views.user_profile, name="profile"),
+
+    path('reports', views.reports_page, name='all_reports'),
+    path('reported/<int:post_id>/', views.reported, name="reported"),
+    path('report_closed/<int:report_id>/<int:verdict>', views.report_closed, name='report_closed'),
+
+    path('settings/<slug:username>', views.settings, name="settings"),
+    path('settings/accountsettings/<slug:username>', views.user_settings, name="user_settings"),
+    path('settings/adminusersettings/<slug:username>', views.admin_user_settings, name="admin_user_settings"),
+
+    path('thread/<int:thread_id>/', views.thread, name="thread"),
+    path('thread/<int:thread_id>/subscribe', views.thread_subscribe, name="thread_subscribe"),
+    path('thread/<int:thread_id>/flag/<int:post_id>/<int:state>', views.hide_post, name="hide_post"),
     path('thread_search/', views.thread_search, name="thread_search_results"),
 ]

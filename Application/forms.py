@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import PasswordInput
-from Application.models import Thread, Post, User, Course
+from Application.models import Message, Thread, Post, User, Course
 from django.contrib.auth.forms import UserCreationForm
 
 
@@ -89,6 +89,11 @@ class ThreadForm(forms.ModelForm):
         model = Thread
         fields = ('subject',)
 
+class MessageForm(forms.ModelForm):
+    class Meta:
+        model = Message
+        fields = ('body',)
+        labels= {'body': '',}
 
 class PostForm(forms.ModelForm):
     class Meta:

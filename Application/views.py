@@ -2,10 +2,10 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
+from django.db.models import Q 
 from .forms import *
 from .models import *
 from .services import *
-
 
 @login_required()
 def home(request):
@@ -119,6 +119,29 @@ def thread(request, thread_id):
     form = PostForm()
     return render(request, 'thread.html', {'message': message, 'thread': t, 'posts': posts, 'sub': sub, 'form': form})
 
+@login_required()
+def messages(request, username):
+    user = User.objects.get(username=username)
+    conversations = Conversation.objects.filter(Q(to_user=user.id) | Q(from_user=user.id))
+    return render(request, 'messages.html', {'conversations': conversations, 'user': user})
+
+@login_required()
+def conversation(request, conversation_id):
+    messages = Message.objects.filter(conversation_id=conversation_id).order_by('timesent')
+    conversation = Conversation.objects.get(id=conversation_id)
+    form = MessageForm()
+    if request.method == 'POST':
+        form = MessageForm(request.POST)
+        if form.is_valid():
+            content = form.cleaned_data.get('body')
+            print(content)
+            Message.objects.create(conversation=conversation, body=content, to_user=conversation.to_user, from_user=conversation.from_user)
+    return render(request, 'conversation.html', {'messages': messages, 'form': form})
+
+@login_required()
+def new_conversation(request, username):
+    users = User.objects.all().order_by('first_name')
+    return render(request, 'new_conversation.html', {'users': users})
 
 def thread_subscribe(request, thread_id):
     t = Thread.objects.get(id=thread_id)
