@@ -41,6 +41,16 @@ class Post(models.Model):
     thread = models.ForeignKey(Thread, on_delete=models.CASCADE)
     visible = models.BooleanField(default=True)
 
+class Conversation(models.Model):
+    to_user = models.ForeignKey(User, related_name='original_sender', on_delete=models.CASCADE, null=True)
+    from_user = models.ForeignKey(User, related_name='original_receiver', on_delete=models.CASCADE, null=True)
+
+class Message(models.Model):
+    to_user = models.ForeignKey(User, related_name='message_to', on_delete=models.CASCADE, null=True)
+    from_user = models.ForeignKey(User, related_name='message_from', on_delete=models.CASCADE, null=True)
+    conversation = models.ForeignKey(Conversation, on_delete=models.CASCADE, null=True)
+    body = models.TextField(max_length=1000, blank=True, null=True)
+    timesent = models.DateTimeField(auto_now_add=True)
 
 class Notification(models.Model):
     # 1 = post in subscribed thread, 2 = user's post has been flagged/hidden, 3 = professor received a report
